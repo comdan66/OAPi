@@ -33,8 +33,8 @@ module.exports = {
     },
 
     domain: '127.0.0.1',
-    minPort: 8000,
-    maxPort: 8999,
+    minPort: 8080,
+    maxPort: 8080,
     defaultPort: null,
     utf8Exts: ['.html', '.css', '.js', '.json', '.text'] // 採用 utf8 編碼的副檔名
   },
