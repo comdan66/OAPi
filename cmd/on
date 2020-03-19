@@ -8,7 +8,7 @@
 require('./libs/node/Init')
   .title('PI Server')
   .path('config', ['cmd', 'config', 'on.js'])
-  .path('pythonEntry', ['cmd', 'libs', 'python', 'test.py'])
+  .path('pythonEntry', ['cmd', 'libs', 'python', 'Main.py'])
   .gola((load, done) =>
     load('on/Check')(_ =>
         load('on/Server')(_ =>
