@@ -4,3 +4,10 @@
 body { position: relative; display: inline-block; width: 100%; margin: 0; padding: 0; color: #5a5a5a; font-size: medium; text-align: center; font-family: "微軟正黑體", "Open sans", "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif; background-color: #f4f5f7; }
 body::-moz-selection { color: white; background-color: #78baff; }
 body::selection { color: white; background-color: #78baff; }
+
+body { color: rgba(0, 0, 0, 0.7); background-color: #f3f3f3; background-image: url('../img/bk.png'); }
+
+.card { display: inline-block; height: 48px; line-height: 48px; padding: 0 16px; margin: 8px; background-color: white; font-size: 18px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; -moz-box-shadow: 0 1px 5px #aaaaaa; -webkit-box-shadow: 0 1px 5px #aaaaaa; box-shadow: 0 1px 5px #aaaaaa; }
+.card:before, .card:after { font-size: 15px; }
+.card:before { content: attr(title) "："; margin-right: 3px; }
+.card:after { content: attr(unit); margin-left: 3px; }

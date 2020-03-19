@@ -7,3 +7,35 @@
 
 @import "_/_init";
 @import "_/_public";
+
+$mainBackgroundImage: image-url('bk.png', false, false) !global;
+
+body {
+  color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(243, 243, 243, 1.00);
+  background-image: $mainBackgroundImage;
+}
+
+.card {
+  display: inline-block;
+  height: 48px;
+  line-height: 48px;
+  padding: 0 16px;
+  margin: 8px;
+  background-color: white;
+  font-size: 18px;
+  @include border-radius(3px);
+  @include box-shadow(0 1px 5px rgb(170, 170, 170));
+
+  &:before, &:after {
+    font-size: 15px;
+  }
+  &:before {
+    content: attr(title) '：';
+    margin-right: 3px;
+  }
+  &:after {
+    content: attr(unit);
+    margin-left: 3px;
+  }
+}
