@@ -22,6 +22,8 @@ Load.func({
       template => *if=HT
         label.card => title=目前濕度   unit=%    *text=HT.H
         label.card => title=目前溫度   unit=°C   *text=HT.T
+      template => *else
+        div => *text='讀取中，請稍候…'
   `)
 })
 
