@@ -8,11 +8,12 @@
 Load.css('icon.css')
 Load.css('index.css')
 
-let dataA = {
-  HT: null
-}
+let serverData = null
+
 Load.func({
-  data: dataA,
+  data: {
+    server: serverData
+  },
   mounted () {
 
     Load.closeLoading()
@@ -20,15 +21,17 @@ Load.func({
   template: El(`
     main
       h1 => *text = '房間監控系統'
-      template => *if=HT
-        label.card => title=目前濕度   unit=%    *text=HT.H
-        label.card => title=目前溫度   unit=°C   *text=HT.T
+      template => *if=server
+        label.card => title=線上人數   unit=位    *text=server.connCnt
+        label.card => title=目前濕度   unit=%    *text=server.humidity
+        label.card => title=目前溫度   unit=°C   *text=server.temperature
       template => *else
         div => *text='讀取中，請稍候…'
   `)
 })
 
 $(_ => {
+
   var socket = io.connect()
 
   socket.on('action', data => {
@@ -36,7 +39,5 @@ $(_ => {
       location.reload(true)
   });
 
-  socket.on('update', data => {
-    dataA.HT = data
-  });
+  socket.on('data', data => Load.instances.length ? Load.instances[0].server = data : null);
 })

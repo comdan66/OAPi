@@ -194,6 +194,7 @@ window.URL = {
 
 window.Load = new Vue({
   data: {
+    instances: [],
     show: true,
     hide: false,
     index: -1,
@@ -235,7 +236,6 @@ window.Load = new Vue({
     genLoadCSS (func) {
       return this.cssPath
         ? this.cssPath = $("<link />")
-          .attr('a', 'a')
           .attr('rel', 'stylesheet')
           .attr('type', 'text/css')
           .attr('href', this.cssPath)
@@ -265,7 +265,11 @@ window.Load = new Vue({
       return this.index++, !this.file
         ? typeof func == 'function'
           ? func()
-          : document.body.appendChild(new Vue(func).$mount().$el)
+          : document.body.appendChild(((_ => {
+            let vm = new Vue(func)
+            this.instances.push(vm)
+            return vm
+          })()).$mount().$el)
         : this.load(this.file, this.run.bind(this, func));
     },
     mount (func) {

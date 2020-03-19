@@ -54,32 +54,32 @@ const checkConfig = _ => {
 
 module.exports = closure => {
   const CmdExists = require('command-exists').sync
-  Display.title('檢查開發環境')
+  Display.title('檢查環境')
 
   Display.lines('檢查是否有 Python 指令', '執行動作', 'check python command')
   CmdExists('python')
     ? Display.line(true, '有')
     : Display.line(false, '找不到 Python 指令，部署過程中會使用到 Python 指令！')
 
-  Display.lines('取得開發設定檔', '執行動作', 'read config/serve.js file')
+  Display.lines('取得設定檔', '執行動作', 'read config/serve.js file')
   Exists(Path.config)
     ? Display.line(true)
-    : Display.line(false, '尚未設定開發設定檔！')
+    : Display.line(false, '尚未設定設定檔！')
 
   Display.lines('檢查 Python 主要檔案是否存在', '執行動作', 'check ' + Path.relative(Path.root, Path.pythonEntry) + ' is exists')
   Exists(Path.pythonEntry)
     ? Display.line(true, '存在')
     : Display.line(false, 'Python 主要檔案不存在！')
 
-  Display.lines('檢查開發設定檔', '執行動作', 'check config/serve.js file')
+  Display.lines('檢查設定檔', '執行動作', 'check config/serve.js file')
   checkConfig()
     ? Display.line(true)
-    : Display.line(false, '確認開發設定檔失敗！')
+    : Display.line(false, '確認設定檔失敗！')
 
-  Display.lines('檢查開發目錄是否存在', '執行動作', 'check ' + Path.relative(Path.root, Path.entry) + Path.sep + ' is exists')
+  Display.lines('檢查目錄是否存在', '執行動作', 'check ' + Path.relative(Path.root, Path.entry) + Path.sep + ' is exists')
   Exists(Path.entry)
     ? Display.line(true, '存在')
-    : Display.line(false, '開發目錄不存在！')
+    : Display.line(false, '目錄不存在！')
 
   return typeof closure == 'function' && closure()
 }

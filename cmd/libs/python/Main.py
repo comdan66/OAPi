@@ -109,8 +109,8 @@ def read_dht11_dat():
     return False
 
   return json.dumps({
-    'H': the_bytes[0],
-    'T': the_bytes[2]
+    'humidity': the_bytes[0],
+    'temperature': the_bytes[2]
   })
 
 def main():

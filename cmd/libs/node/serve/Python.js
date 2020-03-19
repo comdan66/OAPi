@@ -8,7 +8,8 @@
 const Path    = require('path')
 const Display = require('../Display')
 const Print   = require('../Print')
-const Bus         = require('../Bus')
+const SocketConn = require('./Shared').SocketConn
+const Data       = require('./Shared').data
 
 module.exports = closure => {
   const { PythonShell } = require('python-shell')
@@ -21,7 +22,11 @@ module.exports = closure => {
     mode: 'json',
     pythonOptions: ['-u'] })
 
-  pyshell.on('message', message => Bus.has('update') && Bus.emit('update', message))
+  pyshell.on('message', data => {
+    Data.humidity    = data.humidity
+    Data.temperature = data.temperature
+    SocketConn.sendAll()
+  })
 
   typeof closure == 'function' && closure()
 }

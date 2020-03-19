@@ -5,17 +5,18 @@
  * @link        https://www.ioa.tw/
  */
 
-const Path       = require('path')
-const Url        = require('url')
-const Exec       = require('child_process').exec
-const Display    = require('../Display')
-const Xterm      = require('../Xterm')
-const Print      = require('../Print')
-const Bus        = require('../Bus')
-const Config     = require(Path.config)
-const FileSystem = require('fs')
-  const Exists   = FileSystem.existsSync
-  const FileRead = FileSystem.readFile
+const Path        = require('path')
+const Url         = require('url')
+const Exec        = require('child_process').exec
+const Display     = require('../Display')
+const Xterm       = require('../Xterm')
+const Print       = require('../Print')
+const SocketConn  = require('./Shared').SocketConn
+const Data        = require('./Shared').data
+const Config      = require(Path.config)
+const FileSystem  = require('fs')
+  const Exists    = FileSystem.existsSync
+  const FileRead  = FileSystem.readFile
 
 const isPortUsed = (port, closure) => {
   const net = require('net').createServer()
@@ -175,21 +176,13 @@ const openServer = (port, closure) => {
     ? Print(' '.repeat(5) + Display.markHash() + ' ' + '網址' + Display.markSemicolon() + (Config.server.https.enable ? 'https' : 'http') + '://' + Config.server.domain + ':' + port + '/' + Display.LN)
     : Print(' '.repeat(5) + Display.markHash() + ' ' + Xterm.color.gray('網址', true).dim() + Display.markSemicolon() + Xterm.color.blue((Config.server.https.enable ? 'https' : 'http') + '://' + Config.server.domain + ':' + port + '/', true).italic().underline() + Display.LN)
 
-  const connections = []
+  require('socket.io').listen(server).sockets.on('connection', socket => {
+    let socketConn = SocketConn(socket)
+    socket.on('disconnect', () => (socketConn.remove(), SocketConn.sendAll()))
+    SocketConn.sendAll()
+  })
 
-  const Reload = closure => {
-    connections.forEach(t => t.emit('action', 'reload'))
-    typeof closure == 'function' && closure()
-  }
-
-  const Update = data => connections.forEach(t => t.emit('update', data))
-
-  require('socket.io').listen(server).sockets.on('connection', socket => connections.push(socket) && socket.on('disconnect', () => {
-    const index = connections.indexOf(socket)
-    index === -1 || connections.splice(index, 1)
-  }))
-
-  return Bus.on('reload', Reload) && Bus.on('update', Update) && typeof closure == 'function' && closure()
+  return typeof closure == 'function' && closure()
 }
 
 module.exports = closure =>

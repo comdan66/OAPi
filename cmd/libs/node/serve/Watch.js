@@ -12,6 +12,8 @@ const Display     = require('../Display')
 const Xterm       = require('../Xterm')
 const Print       = require('../Print')
 const Bus         = require('../Bus')
+const SocketConn  = require('./Shared').SocketConn
+
 const ParseData   = require('./ParseData')
 const DemoData    = require('./DemoData')
 const Actions     = require('./Actions')
@@ -129,21 +131,15 @@ const FileAction = function(type, filepath) {
     switch (this.type()) {
       case Actions.rebuild:
         readied && Display.linesM('更新檔案', ['檔案路徑', this.filepath().replace(Path.entry, '')], ['執行動作', 'load page'])
-        return Bus.has('reload')
-          ? Bus.emit('reload', _ => done(closure))
-          : done(closure)
+        return SocketConn.reloadAll(_ => done(closure))
 
       case Actions.create:
         readied && Display.linesM('新增檔案', ['檔案路徑', this.filepath().replace(Path.entry, '')], ['執行動作', 'load page'])
-        return Bus.has('reload')
-          ? Bus.emit('reload', _ => done(closure))
-          : done(closure)
+        return SocketConn.reloadAll(_ => done(closure))
 
       case Actions.remove:
         readied && Display.linesM('移除檔案', ['檔案路徑', this.filepath().replace(Path.entry, '')], ['執行動作', 'load page'])
-        return Bus.has('reload')
-          ? Bus.emit('reload', _ => done(closure))
-          : done(closure)
+        return SocketConn.reloadAll(_ => done(closure))
 
       default:
         return typeof closure == 'function' && closure()

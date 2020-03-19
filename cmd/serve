@@ -10,7 +10,7 @@ require('./libs/node/Init')
   .path('config', ['cmd', 'config', 'serve.js'])
   .path('compass', ['cmd', 'libs', 'scss', ''])
   .path('phpEntry', ['cmd', 'libs', 'php', 'Main.php'])
-  .path('pythonEntry', ['cmd', 'libs', 'python', 'Main.py'])
+  .path('pythonEntry', ['cmd', 'libs', 'python', 'test.py'])
   .gola((load, done) =>
     load('serve/Check')(_ =>
       load('serve/Watch')(_ =>
