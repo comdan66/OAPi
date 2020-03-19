@@ -1,0 +1,17 @@
+/**
+ * @author      OA Wu <comdan66@gmail.com>
+ * @copyright   Copyright (c) 2015 - 2019, Ginkgo
+ * @license     http://opensource.org/licenses/MIT  MIT License
+ * @link        https://www.ioa.tw/
+ */
+
+require('./libs/node/Init')
+  .title('PI Server')
+  .path('config', ['cmd', 'config', 'on.js'])
+  .path('pythonEntry', ['cmd', 'libs', 'python', 'test.py'])
+  .gola((load, done) =>
+    load('on/Check')(_ =>
+        load('on/Server')(_ =>
+          load('on/Python')(_ =>
+            load('on/Ready')(
+              done)))))

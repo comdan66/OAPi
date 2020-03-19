@@ -186,7 +186,7 @@ module.exports = closure => {
     : Display.line(false, 'PHP 主要檔案不存在！')
 
   Display.lines('檢查 Python 主要檔案是否存在', '執行動作', 'check ' + Path.relative(Path.root, Path.pythonEntry) + ' is exists')
-  Exists(Path.phpEntry)
+  Exists(Path.pythonEntry)
     ? Display.line(true, '存在')
     : Display.line(false, 'Python 主要檔案不存在！')
 
