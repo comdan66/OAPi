@@ -100,7 +100,7 @@ const showFile = (response, file, ext) => {
     if (error) return showError(response, '讀取檔案 ' + file.replace(Path.entry, '') + ' 發生錯誤！')
     const Mime = require('mime')
     response.writeHead(200, {'Content-Type': Mime.getType(file) + '; charset=UTF-8'})
-    response.write('.' + ext == '.html' ? addSocket(data) : data)
+    response.write(data)
     response.end()
   })
 }
@@ -123,7 +123,7 @@ const showPHP = (response, port, file) => Exec('php ' + Path.phpEntry +
   ' --env Development' +
   ' --base-url ' + (Config.server.https.enable ? 'https' : 'http') + '://' + Config.server.domain + ':' + port + '/', { maxBuffer: 1024 * 500 }, (error, stdout, stderr) => {
   response.writeHead(error ? 400 : 200, {'Content-Type': 'text/html; charset=UTF-8'})
-  response.write(addSocket(stdout))
+  response.write(stdout)
   response.end()
   return
 })
@@ -182,12 +182,14 @@ const openServer = (port, closure) => {
     typeof closure == 'function' && closure()
   }
 
+  const Update = data => connections.forEach(t => t.emit('update', data))
+
   require('socket.io').listen(server).sockets.on('connection', socket => connections.push(socket) && socket.on('disconnect', () => {
     const index = connections.indexOf(socket)
     index === -1 || connections.splice(index, 1)
   }))
 
-  return Bus.on('reload', Reload) && typeof closure == 'function' && closure()
+  return Bus.on('reload', Reload) && Bus.on('update', Update) && typeof closure == 'function' && closure()
 }
 
 module.exports = closure =>
