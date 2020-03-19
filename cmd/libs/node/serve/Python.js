@@ -23,8 +23,8 @@ module.exports = closure => {
     pythonOptions: ['-u'] })
 
   pyshell.on('message', data => {
-    Data.humidity    = data.humidity
-    Data.temperature = data.temperature
+    for (var k in data)
+      Data[k] = data[k]
     SocketConn.sendAll()
   })
 

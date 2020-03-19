@@ -11,8 +11,11 @@ def main():
   while True:
     i = i + 1
     print(json.dumps({
-      "humidity": i,
-      "temperature": 30,
+      'device1': None,
+      'device2': {
+        'pressure': '101316.00',
+        'temperature': 100.01
+      }
     }))
     time.sleep(1)
 
