@@ -19,13 +19,15 @@ module.exports = closure => {
   Display.line(true)
   
   const pyshell = new PythonShell(Path.pythonEntry, {
-    mode: 'json',
+    // mode: 'json',
     pythonOptions: ['-u'] })
 
   pyshell.on('message', data => {
-    for (var k in data)
-      Data[k] = data[k]
-    SocketConn.sendAll()
+    // for (var k in data)
+    //   Data[k] = data[k]
+    // SocketConn.sendAll()
+    console.error(data);
+    
   })
 
   typeof closure == 'function' && closure()
