@@ -19,6 +19,7 @@ Load.func({
   },
   template: El(`
     main
+      h1 => *text = '房間監控系統'
       template => *if=HT
         label.card => title=目前濕度   unit=%    *text=HT.H
         label.card => title=目前溫度   unit=°C   *text=HT.T
