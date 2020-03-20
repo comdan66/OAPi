@@ -63,8 +63,8 @@ Load.func({
         div.p0.active
           div.unit
             b => *text='室內溫度'
-            div.gauge => :percent=temperaturePercent
-              div.border => :range=range1025.length-1
+            div.gauge => :percent=temperaturePercent   :range=range1025.length-1
+              div.border
                 i => *for=(val, i) in range1025   :key=i   :title=val
                 div.center
                 div.pointer
@@ -72,8 +72,8 @@ Load.func({
 
           div.unit
             b => *text='室內濕度'
-            div.gauge => :percent=humidityPercent
-              div.border => :range=range0000.length-1
+            div.gauge => :percent=humidityPercent   :range=range0000.length-1
+              div.border
                 i => *for=(val, i) in range0000   :key=i   :title=val
                 div.center
                 div.pointer
@@ -81,8 +81,8 @@ Load.func({
 
           div.unit
             b => *text='室內氣壓'
-            div.gauge => :percent=pressurePercent
-              div.border => :range=range0121.length-1
+            div.gauge => :percent=pressurePercent   :range=range0121.length-1
+              div.border
                 i => *for=(val, i) in range0121   :key=i   :title=(100000+val*100) / 1000
                 div.center
                 div.pointer
@@ -90,8 +90,8 @@ Load.func({
 
           div.unit
             b => *text='體感溫度'
-            div.gauge => :percent=null
-              div.border => :range=range1025.length-1
+            div.gauge => :percent=null   :range=range1025.length-1
+              div.border
                 i => *for=(val, i) in range1025   :key=i   :title=val
                 div.center
                 div.pointer

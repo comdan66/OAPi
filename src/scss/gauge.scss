@@ -15,12 +15,9 @@
 
   padding: 0;
   padding-top: 75%;
-
   overflow: hidden;
 
   .border {
-    $h: 12px;
-
     position: absolute;
     left: 0;
     top: 0;
@@ -34,138 +31,73 @@
     border: 3px solid rgba(255, 255, 255, .3);
     overflow: hidden;
 
+    @include opacity(.4);
     @include border-radius(50%);
+    @include transition(opacity .3s);
     @include background-image(linear-gradient(
       rgba(255, 255, 255, 0.1) 0%,
       rgba(255, 255, 255, 0) 75%));
-    
-    i {
-      position: absolute;
-      display: inline-block;
-      height: $h;
-      width: 1px;
-      @include background-image(linear-gradient(
-        rgba(255, 255, 255, 0.25) 0%,
-        rgba(255, 255, 255, 0.5) 100%));
+  }
 
-      &[title]:after {
-        content: attr(title);
-        position: absolute;
-        top: calc(100% + 4px);
-        left: 50%;
-        display: inline-block;
-        font-size: 10px;
-        font-style: normal;
-      }
-    }
-    .center {
+  i {
+    position: absolute;
+    display: inline-block;
+    width: 1px;
+    @include background-image(linear-gradient(
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.5) 100%));
+
+    &[title]:after {
+      content: attr(title);
       position: absolute;
-      z-index: 2;
+      top: calc(100% + 4px);
       left: 50%;
-      top: 50%;
       display: inline-block;
-      width: 22px;
-      height: 22px;
-      background-color: rgba(106, 108, 120, 1.00);
-      @include border-radius(50%);
-      @include transform(translate(-50%, -50%));
-      @include transition(background-color .3s);
-    }
-    .pointer {
-      $over: 16px;
-      position: absolute;
-      z-index: 1;
-      left: calc(50% - 6px / 2);
-      bottom: calc(50% - #{(16px / 2 + $over)});
-      display: inline-block;
-      width: 6px;
-      height: calc(50% - 24px);
-      background-color: rgba(213, 79, 61, 1.00);
-
-      @include background-image(linear-gradient(
-        -269deg,
-        rgba(223, 109, 94, 1.00) 0%,
-        rgba(228, 100, 83, 1.00) 10%,
-        rgba(194, 62, 44, 1.00) 80%,
-        rgba(186, 54, 36, 1.00) 100%));
-
-      @include opacity(.4);
-      @include border-top-radius(50%);
-      @include border-bottom-radius(3px);
-      @include transform-origin(center, calc(100% - #{(16px / 2 + $over)}));
-      @include transition(transform .5s cubic-bezier(.11, 1.45, .46, .94) .3s, opacity .3s);
-      @include rotate(#{-138deg});
-    }
-    
-    $ranges: 25, 100, 20;
-    @each $range in $ranges {
-      $u: 240deg / $range;
-
-      &[range='#{$range}'] i {
-        @for $i from 0 through $range {
-          &:nth-child(#{$i + 1}) {
-            @include transform(translate(-50%, -50%) rotate(-120deg + $u * $i));
-            &:after {
-              @include transform(translate(-50%, 0) rotate(120deg - $u * $i));
-            }
-
-            @if ($range == 25 and $i % 5 == 0) or ($range == 100 and $i % 10 == 0) or ($range == 20 and $i % 5 == 0) {
-              $h: 20px;
-              height: $h;
-              top: calc(50% - #{cos(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
-              left: calc(50% + #{sin(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
-
-              width: 2px;
-              @include background-image(linear-gradient(
-                rgba(255, 255, 255, 0.25) 0%,
-                rgba(255, 255, 255, 0.75) 100%));
-            } @else {
-              $h: 12px;
-              height: $h;
-              top: calc(50% - #{cos(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
-              left: calc(50% + #{sin(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
-              width: 1px;
-              &:after {
-                display: none;
-              }
-            }
-            @if $range == 100 and $i % 10 == 5 {
-              $h: 16px;
-              height: $h;
-              top: calc(50% - #{cos(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
-              left: calc(50% + #{sin(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
-
-              width: 2px;
-              @include background-image(linear-gradient(
-                rgba(255, 255, 255, 0.25) 0%,
-                rgba(255, 255, 255, 0.75) 100%));
-            }
-          }
-        }
-      }
+      font-size: 10px;
+      font-style: normal;
     }
   }
 
-  &[percent] {
-    .center {
-      background-color: rgba(179, 180, 186, 1.00);
-      @include box-shadow(inset 1px 1px 1px rgba(255, 255, 255, .3), inset -1px -1px 1px rgba(0, 0, 0, .2));
-    }
-    .pointer {
-      @include opacity(1);
-    }
-    span {
-      @include opacity(1);
-    }
+  .center {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    // background-color: rgba(106, 108, 120, 1.00);
+    @include border-radius(50%);
+    @include transform(translate(-50%, -50%));
+    // @include transition(background-color .3s);
+
+    background-color: rgba(179, 180, 186, 1.00);
+    @include box-shadow(inset 1px 1px 1px rgba(255, 255, 255, .3), inset -1px -1px 1px rgba(0, 0, 0, .2));
   }
 
-  $u: 240deg / 100;
-  @for $i from 0 through 100 {
-    &[percent='#{$i}'] {
-      .pointer {
-        @include rotate(#{-120deg + $u * $i});
-      }
-    }
+  .pointer {
+    $over: 16px;
+    position: absolute;
+    z-index: 1;
+    left: calc(50% - 6px / 2);
+    bottom: calc(50% - #{(16px / 2 + $over)});
+    display: inline-block;
+    width: 6px;
+    height: calc(50% - 24px);
+    background-color: rgba(213, 79, 61, 1.00);
+
+    @include background-image(linear-gradient(
+      -269deg,
+      rgba(223, 109, 94, 1.00) 0%,
+      rgba(228, 100, 83, 1.00) 10%,
+      rgba(194, 62, 44, 1.00) 80%,
+      rgba(186, 54, 36, 1.00) 100%));
+
+    @include border-top-radius(50%);
+    @include border-bottom-radius(3px);
+    @include transform-origin(center, calc(100% - #{(16px / 2 + $over)}));
+    @include transition(transform .5s cubic-bezier(.11, 1.45, .46, .94) .3s);
+    @include rotate(#{-138deg});
   }
 
   span {
@@ -210,6 +142,72 @@
         font-size: 16px;
         margin-right: 2px;
         color: rgba(255, 255, 255, .5);
+      }
+    }
+  }
+
+  &[percent] {
+    .border {
+      @include opacity(1);
+    }
+    span {
+      @include opacity(1);
+    }
+  }
+
+  $u: 240deg / 100;
+  @for $i from 0 through 100 {
+    &[percent='#{$i}'] {
+      .pointer {
+        @include rotate(#{-120deg + $u * $i});
+      }
+    }
+  }
+
+  $ranges: 25, 100, 20;
+  @each $range in $ranges {
+    $u: 240deg / $range;
+
+    &[range='#{$range}'] i {
+      @for $i from 0 through $range {
+        &:nth-child(#{$i + 1}) {
+          @include transform(translate(-50%, -50%) rotate(-120deg + $u * $i));
+          &:after {
+            @include transform(translate(-50%, 0) rotate(120deg - $u * $i));
+          }
+
+          @if ($range == 25 and $i % 5 == 0) or ($range == 100 and $i % 10 == 0) or ($range == 20 and $i % 5 == 0) {
+            $h: 20px;
+            height: $h;
+            top: calc(50% - #{cos(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
+            left: calc(50% + #{sin(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
+
+            width: 2px;
+            @include background-image(linear-gradient(
+              rgba(255, 255, 255, 0.25) 0%,
+              rgba(255, 255, 255, 0.75) 100%));
+          } @else {
+            $h: 12px;
+            height: $h;
+            top: calc(50% - #{cos(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
+            left: calc(50% + #{sin(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
+            width: 1px;
+            &:after {
+              display: none;
+            }
+          }
+          @if $range == 100 and $i % 10 == 5 {
+            $h: 16px;
+            height: $h;
+            top: calc(50% - #{cos(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
+            left: calc(50% + #{sin(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
+
+            width: 2px;
+            @include background-image(linear-gradient(
+              rgba(255, 255, 255, 0.25) 0%,
+              rgba(255, 255, 255, 0.75) 100%));
+          }
+        }
       }
     }
   }
