@@ -13,7 +13,7 @@ let serverData = null
 Load.func({
   data: {
     server: serverData,
-    index: 1,
+    index: 0,
     tabs: ['房間概況', '樹莓派概況']
   },
   mounted () {
