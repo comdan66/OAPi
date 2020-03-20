@@ -164,7 +164,7 @@
     }
   }
 
-  $ranges: 25, 100, 20;
+  $ranges: 25, 100, 20, 80, 200;
   @each $range in $ranges {
     $u: 240deg / $range;
 
@@ -176,7 +176,11 @@
             @include transform(translate(-50%, 0) rotate(120deg - $u * $i));
           }
 
-          @if ($range == 25 and $i % 5 == 0) or ($range == 100 and $i % 10 == 0) or ($range == 20 and $i % 5 == 0) {
+          @if ($range == 25 and $i % 5 == 0)
+           or ($range == 20 and $i % 5 == 0)
+           or ($range == 80 and $i % 10 == 0)
+           or ($range == 100 and $i % 10 == 0)
+           or ($range == 200 and $i % 20 == 0) {
             $h: 20px;
             height: $h;
             top: calc(50% - #{cos(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
@@ -197,6 +201,28 @@
             }
           }
           @if $range == 100 and $i % 10 == 5 {
+            $h: 16px;
+            height: $h;
+            top: calc(50% - #{cos(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
+            left: calc(50% + #{sin(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
+
+            width: 2px;
+            @include background-image(linear-gradient(
+              rgba(255, 255, 255, 0.25) 0%,
+              rgba(255, 255, 255, 0.75) 100%));
+          }
+          @if $range == 80 and $i % 10 == 5 {
+            $h: 16px;
+            height: $h;
+            top: calc(50% - #{cos(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
+            left: calc(50% + #{sin(-120deg + $u * $i)} * ((100% - #{$h}) / 2));
+
+            width: 2px;
+            @include background-image(linear-gradient(
+              rgba(255, 255, 255, 0.25) 0%,
+              rgba(255, 255, 255, 0.75) 100%));
+          }
+          @if $range == 200 and $i % 10 == 0 {
             $h: 16px;
             height: $h;
             top: calc(50% - #{cos(-120deg + $u * $i)} * ((100% - #{$h}) / 2));

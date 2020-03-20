@@ -1,25 +1,29 @@
 #!/usr/bin/env python3
 
-import Adafruit_DHT
-import time
+import re, commands
 
+def check_CPU_temp():
+    temp = None
+    err, msg = commands.getstatusoutput('vcgencmd measure_temp')
+    if not err:
+        m = re.search(r'-?\d\.?\d*', msg)   # https://stackoverflow.com/a/49563120/3904031
+        try:
+            temp = float(m.group())
+        except:
+            pass
+    return temp
 
-sensor = Adafruit_DHT.DHT11
+def check_CPU_volts():
+    volt = None
+    err, msg = commands.getstatusoutput('vcgencmd measure_volts')
+    if not err:
+        m = re.search(r'-?\d\.?\d*', msg)   # https://stackoverflow.com/a/49563120/3904031
+        try:
+            volt = float(m.group())
+        except:
+            pass
+    return volt
 
-pin = 18
-
-def destroy():
-  pass
-
-while True:
-  try:
-    hu, temp = Adafruit_DHT.read_retry(sensor, pin)
-    print('temp:{0:0.1f} hu:{1}'.format(temp,hu))
-    time.sleep(3)
-
-  except RuntimeError as e:
-    print("error\n{0}".format(e))
-
-  except KeyboardInterrupt:
-    destroy() 
-
+temp = check_CPU_temp()
+volt = check_CPU_volts()
+print temp, volt

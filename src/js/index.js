@@ -12,7 +12,9 @@ let serverData = null
 
 Load.func({
   data: {
-    server: serverData
+    server: serverData,
+    index: 1,
+    tabs: ['房間概況', '樹莓派概況']
   },
   mounted () {
     Load.closeLoading()
@@ -70,9 +72,13 @@ Load.func({
     range1025 () { return this.range(10, 35) },
     range0000 () { return this.range(0, 100) },
     range0121 () { return this.range(1, 21) },
+    range20100 () { return this.range(20, 100) },
+    range20220 () { return this.range(20, 220) },
     temperature () { return this.server && this.server.device1 && Math.round(this.server.device1.temperature * 10) / 10 },
     humidity () { return this.server && this.server.device1 && Math.round(this.server.device1.humidity * 10) / 10 },
     pressure () { return this.server && this.server.device2 && this.server.device2.pressure },
+    cpuTemperature () { return this.server && this.server.cpu && this.server.cpu.temperature },
+    cpuVoltage () { return this.server && this.server.cpu && this.server.cpu.voltage },
     apparentTemperature () {
       return this.temperature && this.humidity && this.pressure
         ? this.temperature < 10
@@ -84,17 +90,20 @@ Load.func({
     humidityPercent () { return min = 0, max = 100, this.humidity ? Math.round((this.humidity - min) / (max - min) * 100) : null },
     pressurePercent () { return min = 100100, max = 102100, this.pressure ? Math.round((this.pressure - min) / (max - min) * 100) : null },
     apparentTemperaturePercent () { return min = 10, max = 35, this.apparentTemperature ? Math.round((this.apparentTemperature - min) / (max - min) * 100) : null },
+    cpuTemperaturePercent () { return min = 20, max = 100, this.cpuTemperature ? Math.round((this.cpuTemperature - min) / (max - min) * 100) : null },
+    cpuVoltagePercent () { return min = 20/100, max = 220/100, this.cpuVoltage ? Math.round((this.cpuVoltage - min) / (max - min) * 100) : null },
   },
   template: El(`
     main
       div#tabs
-        label.active => *text='房間概況'
+        label => *for=(tab, i) in tabs   *text=tab   :class={active:i==index}   @click=index=i
+
         div => *if=server
           i
           b => *text=server.connCnt   title=活躍使用者   unit=人
 
       div#panels
-        div.p0.active
+        div.p0 => :class={active:index==0}
           div.unit
             b => *text='室內溫度'
             div.gauge => :percent=temperaturePercent   :range=range1025.length-1
@@ -130,6 +139,25 @@ Load.func({
                 div.center
                 div.pointer
               span => *text=apparentTemperature   unit=°C
+        div.p0 => :class={active:index==1}
+          div.unit
+            b => *text='溫度'
+            div.gauge => :percent=cpuTemperaturePercent   :range=range20100.length-1
+              div.border
+                i => *for=(val, i) in range20100   :key=i   :title=val
+                div.center
+                div.pointer
+              span => *text=cpuTemperature   unit=°C
+
+          div.unit
+            b => *text='電壓'
+            div.gauge => :percent=cpuVoltagePercent   :range=range20220.length-1
+              div.border
+                i => *for=(val, i) in range20220   :key=i   :title=val/100
+                div.center
+                div.pointer
+              span => *text=cpuVoltage   unit=V
+
   `)
 })
 

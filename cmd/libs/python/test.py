@@ -18,6 +18,10 @@ def main():
       'device2': {
         'pressure': 101238,
         'temperature': 24.5,
+      },
+      'cpu': {
+        'temperature': 56,
+        'voltage': 0.8438
       }
     }))
     time.sleep(1)
