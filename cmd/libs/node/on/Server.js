@@ -188,7 +188,7 @@ const openServer = (port, closure) => {
   require('socket.io').listen(server).sockets.on('connection', socket => {
     let socketConn = SocketConn(socket)
     socket.on('disconnect', () => (socketConn.remove(), SocketConn.sendAll()))
-    SocketConn.sendAll()
+    setTimeout(_ => SocketConn.sendAll(), 300)
   })
 
   return typeof closure == 'function' && closure()
