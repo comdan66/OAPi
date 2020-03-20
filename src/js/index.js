@@ -86,7 +86,7 @@ Load.func({
                 i => *for=(val, i) in range0121   :key=i   :title=(100000+val*100) / 1000
                 div.center
                 div.pointer
-              span => *text=pressure   unit=千帕
+              span => *text=pressure/1000   unit=千帕
 
           div.unit
             b => *text='體感溫度'
