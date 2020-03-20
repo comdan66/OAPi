@@ -97,7 +97,7 @@
       @include rotate(#{-138deg});
     }
     
-    $ranges: 25, 100, 15;
+    $ranges: 25, 100, 20;
     @each $range in $ranges {
       $u: 240deg / $range;
 
@@ -109,7 +109,7 @@
               @include transform(translate(-50%, 0) rotate(120deg - $u * $i));
             }
 
-            @if ($range == 25 and $i % 5 == 0) or ($range == 100 and $i % 10 == 0) or ($range == 15 and $i % 3 == 0) {
+            @if ($range == 25 and $i % 5 == 0) or ($range == 100 and $i % 10 == 0) or ($range == 20 and $i % 5 == 0) {
               $h: 20px;
               height: $h;
               top: calc(50% - #{cos(-120deg + $u * $i)} * ((100% - #{$h}) / 2));

@@ -32,8 +32,8 @@ Load.func({
     range0000 () {
       return this.range(0, 100)
     },
-    range0621 () {
-      return this.range(6, 21)
+    range0121 () {
+      return this.range(1, 21)
     },
     temperature () { return this.server && this.server.device2 && this.server.device2.temperature },
     humidity () { return this.server && this.server.device1 && this.server.device1.humidity },
@@ -47,7 +47,7 @@ Load.func({
       return this.humidity ? Math.round((this.humidity - min) / (max - min) * 100) : null
     },
     pressurePercent () {
-      let min = 100600, max = 102100
+      let min = 100100, max = 102100
       return this.pressure ? Math.round((this.pressure - min) / (max - min) * 100) : null
     }
   },
@@ -82,8 +82,8 @@ Load.func({
           div.unit
             b => *text='室內氣壓'
             div.gauge => :percent=pressurePercent
-              div.border => :range=range0621.length-1
-                i => *for=(val, i) in range0621   :key=i   :title=(100000+val*100) / 1000
+              div.border => :range=range0121.length-1
+                i => *for=(val, i) in range0121   :key=i   :title=(100000+val*100) / 1000
                 div.center
                 div.pointer
               span => *text=pressure   unit=千帕
