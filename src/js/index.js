@@ -55,9 +55,9 @@ Load.func({
     main
       div#tabs
         label.active => *text='房間概況'
-        div
+        div => *if=server
           i
-          b => *text=0   title=活躍使用者   unit=人
+          b => *text=server.connCnt   title=活躍使用者   unit=人
 
       div#panels
         div.p0.active
