@@ -1,12 +1,10 @@
+#!/usr/bin/env python3
 
 import Adafruit_BMP.BMP085 as BMP085
-
-
 import RPi.GPIO as GPIO
 import time
 import json
 import sys
-
 
 DHTPIN = 17
 GPIO.setmode(GPIO.BCM)

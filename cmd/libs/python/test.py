@@ -13,8 +13,8 @@ def main():
     print(json.dumps({
       'device1': None,
       'device2': {
-        'pressure': '101316.00',
-        'temperature': 100.01
+        'pressure': 100600 + i * 2,
+        'temperature': 10 + i % 25
       }
     }))
     time.sleep(1)

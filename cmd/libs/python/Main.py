@@ -114,12 +114,10 @@ def read_dht11_dat():
   }
 
 def read_i2c_BMP():
-  sensor = BMP085.BMP085()
-  temp = sensor.read_temperature()
-  pressure = sensor.read_pressure()
+  sensor = BMP085.BMP085(2)
   return {
-    'temperature': temp,
-    'pressure': pressure
+    'temperature': sensor.read_temperature(),
+    'pressure': sensor.read_pressure()
   }
 
 def main():
