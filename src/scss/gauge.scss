@@ -34,6 +34,7 @@
     @include opacity(.4);
     @include border-radius(50%);
     @include transition(opacity .3s);
+    @include box-shadow(inset 0 3px 8px rgba(0, 0, 0, 0.3));
     @include background-image(linear-gradient(
       rgba(255, 255, 255, 0.1) 0%,
       rgba(255, 255, 255, 0) 75%));
