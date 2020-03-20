@@ -20,6 +20,7 @@ module.exports = closure => {
   
   const pyshell = new PythonShell(Path.pythonEntry, {
     mode: 'json',
+    pythonPath: '/usr/bin/python',
     pythonOptions: ['-u'] })
 
   pyshell.on('message', data => {
