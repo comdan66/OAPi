@@ -11,7 +11,7 @@ sensor1 = Adafruit_DHT.DHT22
 sensor2 = BMP085.BMP085(2)
 
 def read_dht22_dat():
-  humidity, temperature = Adafruit_DHT.read_retry(sensor1, 17)
+  humidity, temperature = Adafruit_DHT.read_retry(sensor1, 27)
 
   return {
     'humidity': humidity,
