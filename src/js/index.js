@@ -82,8 +82,8 @@ Load.func({
     apparentTemperature () {
       return this.temperature && this.humidity && this.pressure
         ? this.temperature < 10
-          ? this.windChill(this.temperature, 0)
-          : this.heatIndex(this.temperature, this.humidity / 100, this.pressure)
+          ? Math.round(this.windChill(this.temperature, 0) * 10) / 10
+          : Math.round(this.heatIndex(this.temperature, this.humidity / 100, this.pressure) * 10) / 10
         : null
     },
     temperaturePercent () { return min = 10, max = 35, this.temperature ? Math.round((this.temperature - min) / (max - min) * 100) : null },
