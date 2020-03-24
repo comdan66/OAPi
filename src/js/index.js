@@ -100,7 +100,7 @@ Load.func({
 
         div => *if=server
           i
-          b => *text=server.connCnt   title=活躍使用者   unit=人
+          b => *text=server.connCnt   title=線上人數   unit=人
 
       div#panels
         div.p0 => :class={active:index==0}

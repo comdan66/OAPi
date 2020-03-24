@@ -132,7 +132,11 @@ const showPHP = (response, port, file) => Exec('php ' + Path.phpEntry +
 const show404 = response => showError(response)
 const showHTML = (response, file) => showFile(response, file, 'html')
 const IP = request => {
-  let ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress || request.socket.remoteAddress || request.connection.socket.remoteAddress
+  let ip = request.headers['x-forwarded-for']
+    || request.connection.remoteAddress
+    || request.socket.remoteAddress
+    || (request.connection.socket && request.connection.socket.remoteAddress)
+
   ip = ip.split(',')[0]
   ip = ip.split(':').slice(-1)
   return ip;
