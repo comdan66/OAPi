@@ -1,0 +1,93 @@
+//
+// @author      OA Wu <comdan66@gmail.com>
+// @copyright   Copyright (c) 2015 - 2019, Ginkgo
+// @license     http://opensource.org/licenses/MIT  MIT License
+// @link        https://www.ioa.tw/
+//
+
+@import "_/_init";
+@import "_/_public";
+
+#_loading {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(244, 245, 247, 1.00);
+  z-index: 9999;
+  @include transition(opacity .3s);
+
+  &:before, span {
+    @include opacity(0);
+    @include animation(show .3s forwards);
+    @include animation-delay(.75s);
+  }
+  &:before {
+    content: "載入中，請稍候…";
+    position: absolute;
+    left: 50%;
+    top: calc(50% - #{(15px + 4px)});
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, .5);
+    @include transform(translate(-50%, calc(-50%)));
+  }
+
+  span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: inline-block;
+    width: 200px;
+    height: 10px;
+    @include transform(translate(-50%, -50%));
+    @include border-radius(8px);
+
+    overflow: hidden;
+    &:before, &:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: inline-block;
+      height: 100%;
+    }
+    &:after {
+      width: 100%;
+      z-index: 1;
+      border: 1px solid rgba(0, 0, 0, .05);
+      border-right: 1px solid rgba(0, 0, 0, .09);
+      background-color: rgba(0, 0, 0, .1);
+      @include border-radius(8px);
+    }
+    &:before {
+      width: 0;
+      border-right: 1px solid rgba(0, 0, 0, .09);
+      background-color: rgba(0, 0, 0, .2);
+      z-index: 2;
+      @include border-radius(8px);
+      @include transition(width .1s);
+    }
+  }
+
+  @for $i from 0 through 100 {
+    &[percent="#{$i}"] {
+      &:before { content: '載入中，請稍候… #{$i}%'; }
+      span:before {
+        width: $i * 1%;
+      }
+    }
+  }
+  &.hide {
+    @include opacity(0);
+  }
+}
+
+@include keyframes(show) {
+  0% { @include opacity(0); }
+  100% { @include opacity(1); }
+}

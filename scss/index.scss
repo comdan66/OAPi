@@ -1,0 +1,261 @@
+//
+// @author      OA Wu <comdan66@gmail.com>
+// @copyright   Copyright (c) 2015 - 2019, Ginkgo
+// @license     http://opensource.org/licenses/MIT  MIT License
+// @link        https://www.ioa.tw/
+//
+
+@import "_/_init";
+@import "_/_public";
+
+@import "compass/css3/font-face";
+
+@include font-face("icon", font-files(
+  "icomoon/fonts/icomoon.eot",
+  "icomoon/fonts/icomoon.woff",
+  "icomoon/fonts/icomoon.ttf",
+  "icomoon/fonts/icomoon.svg"));
+
+%-icon {
+  font-family: "icon";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+}
+
+$mainBackgroundImage: image-url('bk.png', false, false) !global;
+
+body {
+  color: rgba(0, 0, 0, 0.7);
+  // background-color: rgba(243, 243, 243, 1.00);
+  // background-image: $mainBackgroundImage;
+  background: rgba(46, 47, 65, 1.00);
+}
+
+.card {
+  display: inline-block;
+  height: 48px;
+  line-height: 48px;
+  padding: 0 16px;
+  margin: 8px;
+  background-color: white;
+  font-size: 18px;
+  @include border-radius(3px);
+  @include box-shadow(0 1px 5px rgb(170, 170, 170));
+
+  &:before, &:after {
+    font-size: 15px;
+  }
+  &:before {
+    content: attr(title) '：';
+    margin-right: 3px;
+  }
+  &:after {
+    content: attr(unit);
+    margin-left: 3px;
+  }
+}
+
+main {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  background: rgba(46, 47, 65, 1.00);
+  color: rgba(241, 241, 241, 1.00);
+}
+
+#tabs {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  @include clearfix();
+  padding: 0 16px;
+
+  div {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: inline-block;
+    padding: 0 10px;
+    height: 45px + 5px;
+    line-height: 45px + 5px;
+    font-size: 20px;
+    font-size: 13px;
+    @include clearfix();
+    > * {
+      float: left;
+      display: inline-block;
+    }
+    
+    i {
+      font-size: 18px;
+      margin-right: 4px;
+      &:before {
+        @extend %-icon;
+        content: '\e001';
+      }
+    }
+    b {
+      font-size: 18px;
+      &:before {
+        content: attr(title) '：';
+        font-size: 16px;
+        font-weight: normal;
+      }
+      &:after {
+        content: attr(unit);
+        margin-left: 3px;
+        font-size: 14px;
+        font-weight: normal;
+      }
+    }
+  }
+  label {
+    position: relative;
+    float: left;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 20px;
+    margin-top: 4px + 10px;
+    height: 45px - 4px;
+    line-height: 45px - 4px;
+
+    z-index: 1;
+    background-color: rgba(46, 47, 65, 1.00);
+    border: 1px solid rgba(241, 241, 241, 1.00);
+    font-size: 14px;
+    @include opacity(.5);
+    @include transition(opacity .3s);
+    
+    &:first-child {
+      @include border-top-left-radius(3px);
+    }
+    &:nth-last-child(2) {
+      @include border-top-right-radius(3px);
+    }
+
+    &.active {
+      border-bottom: 0;
+      @include opacity(1);
+      z-index: 3;
+      margin-top: 10px;
+      font-size: 16px;
+      height: 45px;
+      line-height: 45px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      @include border-top-left-radius(3px);
+      @include border-top-right-radius(3px);
+    }
+    + label {
+      margin-left: -1px;
+    }
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: inline-block;
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid rgba(241, 241, 241, 1.00);;
+    z-index: 2;
+    @include box-shadow(inset 0 0 5px rgba(39, 40, 34, .300));
+  }
+}
+
+#panels {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: calc(100% - 45px - 10px);
+
+  > div {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(46, 47, 65, 1.00);
+
+    @include opacity(0);
+    @include transition(opacity .3s);
+    
+    &.active {
+      position: relative;
+      z-index: 2;
+      @include opacity(1);
+    }
+  }
+}
+
+.p0 {
+  padding: 36px 24px 20px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  .unit {
+    position: relative;
+    display: inline-block;
+    width: 400px;
+    margin: 5px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, .03);
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      @include border-radius(2px);
+    }
+
+    b {
+      display: inline-block;
+      width: 100%;
+      height: 64px;
+      line-height: 64px;
+      padding: 0 20px;
+      color: white;
+      font-size: 20px;
+    }
+    .gauge {
+      width: calc(100% - 30px * 2);
+      margin: 10px 30px 40px 30px;
+
+      @include range-width(0, 450px) {
+        span {
+          height: 32px;
+          line-height: 32px;
+          font-size: 16px;
+          padding: 0 16px;
+
+          &:after {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+  @include range-width(0, 450px) {
+    padding: 36px 10px 20px 10px;
+    .unit {
+      width: 100%;
+      margin: 0;
+      + .unit {
+        margin-top: 12px;
+      }
+    }
+  }
+}
+
