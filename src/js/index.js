@@ -5,8 +5,8 @@
  * @link        https://www.ioa.tw/
  */
 
-window.Load.css('https://comdan66.github.io/OAPi/gauge.css')
-window.Load.css('https://comdan66.github.io/OAPi/index.css')
+window.Load.css('https://comdan66.github.io/OAPi/css/gauge.css')
+window.Load.css('https://comdan66.github.io/OAPi/css/index.css')
 
 let serverData = null
 

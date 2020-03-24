@@ -200,7 +200,7 @@ window.Load = new Vue({
     index: -1,
     files: [],
     maxTotal: 0,
-    cssPath: 'https://comdan66.github.io/OAPi/loading.css',
+    cssPath: 'https://comdan66.github.io/OAPi/css/loading.css',
   },
   computed: {
     file () { return this.files[this.index]; },
