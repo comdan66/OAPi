@@ -5,19 +5,19 @@
  * @link        https://www.ioa.tw/
  */
 
-Load.css('gauge.css')
-Load.css('index.css')
+window.Load.css('gauge.css')
+window.Load.css('index.css')
 
 let serverData = null
 
-Load.func({
+window.Load.func({
   data: {
     server: serverData,
     index: 0,
     tabs: ['房間概況', '樹莓派概況']
   },
   mounted () {
-    Load.closeLoading()
+    window.Load.closeLoading()
   },
   methods: {
     windChill (temperature, wind) {
@@ -170,5 +170,5 @@ $(_ => {
       location.reload(true)
   });
 
-  socket.on('data', data => Load.instances.length ? Load.instances[0].server = data : null);
+  socket.on('data', data => window.Load.instances.length ? window.Load.instances[0].server = data : null);
 })
