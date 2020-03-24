@@ -157,7 +157,6 @@ window.Load.func({
                 div.center
                 div.pointer
               span => *text=cpuVoltage   unit=V
-
   `)
 })
 
