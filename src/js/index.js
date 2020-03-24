@@ -163,7 +163,7 @@ window.Load.func({
 
 $(_ => {
 
-  var socket = io.connect()
+  var socket = io.connect('http://ioa.ddns.net:8080/')
 
   socket.on('action', data => {
     if (data === "reload")
