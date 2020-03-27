@@ -38,7 +38,7 @@ Timeline.prototype.fetchX = function(data) {
   this.xAxis.transition().call(this.axisX).selectAll('text').style('text-anchor', 'middle').attr('transform', 'translate(0, 12)').attr('fill', 'rgba(255, 255, 255, .75)').attr('stroke-width', '0')
   this.gPaths.forEach(gPath => gPath.fetch(data))
 }
-Timeline.format = '%H:%M:%S'
+Timeline.format = '%H:%M'
 Timeline.instance = null
 
 window.Load.func({
