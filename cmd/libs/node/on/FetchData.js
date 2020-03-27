@@ -23,7 +23,7 @@ const timer = _ => {
   
   try {
     const now = FileRead(nowPath, 'utf8')
-    const date = '[' + FileRead(datePath, 'utf8').split("\n").filter(t => t.trim().length).slice(-15).join(',') + ']'
+    const date = '[' + FileRead(datePath, 'utf8').split("\n").filter(t => t.trim().length).slice(-30).join(',') + ']'
 
     if (now + date !== last)
       last = now + date
