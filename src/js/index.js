@@ -35,7 +35,16 @@ const Timeline = function(data, el, settings, width, height, padding) {
 Timeline.prototype.fetchX = function(data) {
   this.x.domain(d3.extent(data, d => d.time))
   this.axisX.ticks(data.length)
-  this.xAxis.transition().call(this.axisX).selectAll('text').style('text-anchor', 'middle').attr('transform', 'translate(0, 12)').attr('fill', 'rgba(255, 255, 255, .75)').attr('stroke-width', '0')
+  this.xAxis.transition().call(this.axisX)
+    .selectAll('text')
+    .style('text-anchor', 'middle')
+    .attr('transform', 'translate(0, 12)')
+    .attr('fill', 'rgba(255, 255, 255, .75)')
+    .attr('stroke-width', '0')
+    .attr('dx', '-.8em')
+    .attr('dy', '10px')
+    .attr('transform', 'rotate(-65)')
+    .style('font-size', '12px')
   this.gPaths.forEach(gPath => gPath.fetch(data))
 }
 Timeline.format = '%H:%M'
