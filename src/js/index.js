@@ -56,10 +56,10 @@ window.Load.func({
       const w1 = this.$refs.temperature.clientWidth, h1 = this.$refs.temperature.clientHeight, w2 = this.$refs.humidity.clientWidth, h2 = this.$refs.humidity.clientHeight, w3 = this.$refs.pressure.clientWidth, h3 = this.$refs.pressure.clientHeight, w4 = this.$refs.all.clientWidth, h4 = this.$refs.all.clientHeight
       if (!(w1 && h1 && w2 && h2 && w3 && h3 && w4 && h4)) return
       Timeline.instance = [
-        new Timeline(data, this.$refs.temperature, [{ key: 'temperature', unit: '°C', colors: ['rgba( 41, 244, 153, 1.00)', 'rgba(  0, 159, 252, 1.00)'] }], w1, h1),
-        new Timeline(data, this.$refs.humidity,    [{ key: 'humidity',    unit: '%', colors:    ['rgba(250, 112, 154, 1.00)', 'rgba(254, 224,  65, 1.00)'] }], w2, h2),
-        new Timeline(data, this.$refs.pressure,    [{ key: 'pressure',    unit: 'Pa', colors:    ['rgba(181, 102, 218, 1.00)', 'rgba(238,  96, 156, 1.00)'] }], w3, h3),
-        new Timeline(data, this.$refs.all,         [{ key: 'temperature', unit: '°C', colors: ['rgba( 41, 244, 153, 1.00)', 'rgba(  0, 159, 252, 1.00)'] }, { key: 'humidity',    unit: '%', colors:    ['rgba(250, 112, 154, 1.00)', 'rgba(254, 224,  65, 1.00)'] }, { key: 'pressure',    unit: 'Pa', colors:    ['rgba(181, 102, 218, 1.00)', 'rgba(238,  96, 156, 1.00)'] }], w4, h4),
+        new Timeline(data, this.$refs.temperature, [{ key: 'temperature', unit: '', colors: ['rgba( 41, 244, 153, 1.00)', 'rgba(  0, 159, 252, 1.00)'] }], w1, h1),
+        new Timeline(data, this.$refs.humidity,    [{ key: 'humidity',    unit: '', colors:    ['rgba(250, 112, 154, 1.00)', 'rgba(254, 224,  65, 1.00)'] }], w2, h2),
+        new Timeline(data, this.$refs.pressure,    [{ key: 'pressure',    unit: '', colors:    ['rgba(181, 102, 218, 1.00)', 'rgba(238,  96, 156, 1.00)'] }], w3, h3),
+        new Timeline(data, this.$refs.all,         [{ key: 'temperature', unit: '', colors: ['rgba( 41, 244, 153, 1.00)', 'rgba(  0, 159, 252, 1.00)'] }, { key: 'humidity',    unit: '', colors:    ['rgba(250, 112, 154, 1.00)', 'rgba(254, 224,  65, 1.00)'] }, { key: 'pressure',    unit: '', colors:    ['rgba(181, 102, 218, 1.00)', 'rgba(238,  96, 156, 1.00)'] }], w4, h4),
       ]
       Timeline.fetchX = data => Timeline.instance.forEach(t => t instanceof Timeline && t.fetchX(data))
       Timeline.fetchX(data)
