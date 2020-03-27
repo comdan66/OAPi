@@ -45,8 +45,37 @@ main { position: relative; display: inline-block; width: 100%; background: #2e2f
 .p0 .unit:before { content: ''; position: absolute; left: 0; top: 0; display: inline-block; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.03); overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.3); -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; }
 .p0 .unit b { display: inline-block; width: 100%; height: 64px; line-height: 64px; padding: 0 20px; color: white; font-size: 20px; }
 .p0 .unit .gauge { width: calc(100% - 30px * 2); margin: 10px 30px 40px 30px; }
-@media screen and (max-width: 449px) and (min-width: 0) { .p0 .unit .gauge span { height: 32px; line-height: 32px; font-size: 16px; padding: 0 16px; }
-  .p0 .unit .gauge span:after { font-size: 12px; } }
-@media screen and (max-width: 449px) and (min-width: 0) { .p0 { padding: 36px 10px 20px 10px; }
-  .p0 .unit { width: 100%; margin: 0; }
-  .p0 .unit + .unit { margin-top: 12px; } }
+.p0 .full { display: inline-block; width: 810px; height: 300px; }
+@media screen and (max-width: 699px) and (min-width: 0) { .p0 { padding: 36px 10px 20px 10px; } }
+@media screen and (max-width: 349px) and (min-width: 0) { .p0 .unit { width: calc(100% - 10px); }
+  .p0 .unit .gauge span { height: 32px; line-height: 32px; font-size: 12px; padding: 0 16px; }
+  .p0 .unit .gauge span:after { font-size: 12px; }
+  .p0 .full { width: calc(100% - 10px); } }
+@media screen and (max-width: 449px) and (min-width: 350px) { .p0 .unit { width: calc(100% - 10px); }
+  .p0 .unit .gauge span { height: 32px; line-height: 32px; font-size: 16px; padding: 0 16px; }
+  .p0 .unit .gauge span:after { font-size: 12px; }
+  .p0 .full { width: calc(100% - 10px); } }
+@media screen and (max-width: 659px) and (min-width: 450px) { .p0 .unit { width: calc(100% - 10px); }
+  .p0 .full { width: calc(100% - 10px); } }
+@media screen and (max-width: 769px) and (min-width: 670px) { .p0 .unit { width: calc(50% - 10px); }
+  .p0 .unit .gauge span { height: 32px; line-height: 32px; font-size: 14px; padding: 0 16px; }
+  .p0 .unit .gauge span:after { font-size: 12px; }
+  .p0 .full { width: calc(100% - 10px); } }
+@media screen and (max-width: 879px) and (min-width: 770px) { .p0 .unit { width: calc(50% - 10px); }
+  .p0 .unit .gauge span { height: 32px; line-height: 32px; font-size: 16px; padding: 0 16px; }
+  .p0 .unit .gauge span:after { font-size: 12px; }
+  .p0 .full { width: calc(100% - 10px); } }
+@media screen and (max-width: 899px) and (min-width: 880px) { .p0 .unit { width: calc(50% - 10px); }
+  .p0 .full { width: calc(100% - 10px); } }
+@media screen and (max-width: 1899px) and (min-width: 900px) { .p0 .unit { width: calc(50% - 10px); }
+  .p0 .full { width: calc(50% - 10px); } }
+@media screen and (max-width: 1499px) and (min-width: 1900px) { .p0 .unit { width: 300px; }
+  .p0 .unit .gauge span { height: 32px; line-height: 32px; font-size: 14px; padding: 0 16px; }
+  .p0 .unit .gauge span:after { font-size: 12px; }
+  .p0 .full { width: 610px; } }
+@media screen and (max-width: 1699px) and (min-width: 1500px) { .p0 .unit { width: 350px; }
+  .p0 .unit .gauge span { height: 32px; line-height: 32px; font-size: 16px; padding: 0 16px; }
+  .p0 .unit .gauge span:after { font-size: 12px; }
+  .p0 .full { width: 710px; } }
+@media screen and (min-width: 1700px) { .p0 .unit { width: 400px; }
+  .p0 .full { width: 810px; } }

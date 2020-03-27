@@ -22,37 +22,16 @@ A77 = 0x77
 # LCD 螢幕
 A27 = 0x27
 
-# 時間計數器
-TimeCounter = 0
-
-
-logDir = '/home/pi/www/log/'
-nowTime = ''
-
-def log(data):
-  f = open('{}Sensor.log'.format(logDir), "w")
-  f.write(json.dumps(data))
-  f.close()
-
-  global nowTime
-  now = datetime.datetime.now()
-  hourMin = '{}:{}'.format('{:02d}'.format(now.hour % 12), '{:02d}'.format(now.minute))
-  if nowTime != hourMin:
-    f = open('{}{}{}{}.Sensor.log'.format(logDir, '{:02d}'.format(now.year), '{:02d}'.format(now.month), '{:02d}'.format(now.day)), "a")
-    data['time'] = nowTime = hourMin
-    data['now'] = int(time.time())
-    f.write(json.dumps(data) + "\n")
-    f.close()
-
-  print(data)
 
 def setup():
   global Sensor2
   Sensor2 = BMP085.BMP085(2, A77)
   LCD1602.init(A27, 1)
-  LCD1602.clear()
   GPIO.setmode(GPIO.BCM)
   GPIO.setup(PERSON_PORT, GPIO.IN)
+
+
+TimeI = 0
 
 def readCPUTemp():
   temp = None
@@ -83,7 +62,7 @@ def readPerson():
     return False
 
 def loop():
-  global TimeCounter
+  global TimeI
   
   while True:
     now = datetime.datetime.now()
@@ -96,13 +75,14 @@ def loop():
       '{:02d}'.format(now.minute),
       '{:02d}'.format(now.second)))
 
-    TimeCounter = (TimeCounter + 1) % 2
-    if TimeCounter == 1:
+    TimeI = (TimeI + 1) % 2
+    if TimeI == 1:
       humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, DHT_PORT)
       LCD1602.write(11, 0, '{0:0.1f}C'.format(temperature))
       LCD1602.write(11, 1, '{0:0.1f}%'.format(humidity))
     
-    log({
+    
+    print(json.dumps({
       'status': readPerson(),
       'device1': {
         'humidity': humidity,
@@ -116,8 +96,10 @@ def loop():
         'temperature': readCPUTemp(),
         'voltage': readCPUVolts()
       }
-    })
+    }))
+
     time.sleep(1)
+
 
 def destroy():
   GPIO.cleanup()
@@ -126,5 +108,7 @@ if __name__ == "__main__":
   try:
     setup()
     loop()
+    # while True:
+      # pass
   except KeyboardInterrupt:
     destroy()

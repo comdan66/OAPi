@@ -6,6 +6,7 @@
  */
 
 module.exports = {
+  logDir: '/Users/oa/www/log/',
   dir: {
     entry: 'src'
   },

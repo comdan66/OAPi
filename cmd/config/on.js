@@ -6,6 +6,7 @@
  */
 
 module.exports = {
+  logDir: '/home/pi/www/log/',
   dir: {
     entry: 'src'
   },

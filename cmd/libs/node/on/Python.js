@@ -16,7 +16,6 @@ module.exports = closure => {
 
   Display.title('開啟 Python 監聽')
   Display.lines('執行 Python 指令', '執行指令', 'python ' + Path.pythonEntry)
-  Display.line(true)
   
   const pyshell = new PythonShell(Path.pythonEntry, {
     mode: 'json',
@@ -28,6 +27,8 @@ module.exports = closure => {
       Data[k] = data[k]
     SocketConn.sendAll()
   })
+  Display.line(true)
+
 
   typeof closure == 'function' && closure()
 }

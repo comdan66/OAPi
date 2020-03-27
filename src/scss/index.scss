@@ -233,29 +233,162 @@ main {
       width: calc(100% - 30px * 2);
       margin: 10px 30px 40px 30px;
 
-      @include range-width(0, 450px) {
-        span {
-          height: 32px;
-          line-height: 32px;
-          font-size: 16px;
-          padding: 0 16px;
+      // @include range-width(0, 450px) {
+      //   span {
+      //     height: 32px;
+      //     line-height: 32px;
+      //     font-size: 16px;
+      //     padding: 0 16px;
 
-          &:after {
-            font-size: 12px;
-          }
+      //     &:after {
+      //       font-size: 12px;
+      //     }
+      //   }
+      // }
+    }
+  }
+
+  .full {
+    display: inline-block;
+    width: 400px * 2 + 10px;
+    height: 300px;
+  }
+  @include range-width(0, 700px) {
+    padding: 36px 10px 20px 10px;
+  }
+  @include range-width(0, 350px) {
+    .unit { width: calc(100% - 10px);
+
+      .gauge span {
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+        padding: 0 12px;
+
+        &:after {
+          font-size: 12px;
         }
       }
     }
+    .full { width: calc(100% - 10px); }
   }
-  @include range-width(0, 450px) {
-    padding: 36px 10px 20px 10px;
-    .unit {
-      width: 100%;
-      margin: 0;
-      + .unit {
-        margin-top: 12px;
+  @include range-width(350px, 450px) {
+    .unit { width: calc(100% - 10px);
+
+      .gauge span {
+        height: 32px;
+        line-height: 32px;
+        font-size: 16px;
+        padding: 0 16px;
+
+        &:after {
+          font-size: 12px;
+        }
       }
     }
+    .full { width: calc(100% - 10px); }
   }
+  @include range-width(450px, 660px) {
+    .unit { width: calc(100% - 10px); }
+    .full { width: calc(100% - 10px); }
+  }
+  @include range-width(670px, 770px) {
+    .unit { width: calc(50% - 10px);
+
+      .gauge span {
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+        padding: 0 16px;
+
+        &:after {
+          font-size: 12px;
+        }
+      }
+    }
+    .full { width: calc(100% - 10px); }
+  }
+  @include range-width(770px, 880px) {
+    .unit { width: calc(50% - 10px);
+
+      .gauge span {
+        height: 32px;
+        line-height: 32px;
+        font-size: 16px;
+        padding: 0 16px;
+
+        &:after {
+          font-size: 12px;
+        }
+      }
+    }
+    .full { width: calc(100% - 10px); }
+  }
+  @include range-width(880px, 900px) {
+    .unit { width: calc(50% - 10px); }
+    .full { width: calc(100% - 10px); }
+  }
+  @include range-width(900px, 1900px) {
+    .unit { width: calc(50% - 10px); }
+    .full { width: calc(50% - 10px); }
+  }
+  @include range-width(1900px, 1500px) {
+    .unit { width: 300px;
+      .gauge span {
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+        padding: 0 16px;
+
+        &:after {
+          font-size: 12px;
+        }
+      }
+    }
+    .full { width: 300px * 2 + 10px; }
+  }
+  @include range-width(1500px, 1700px) {
+    .unit { width: 350px;
+
+      .gauge span {
+        height: 32px;
+        line-height: 32px;
+        font-size: 16px;
+        padding: 0 16px;
+
+        &:after {
+          font-size: 12px;
+        }
+      }
+    }
+    .full { width: 350px * 2 + 10px; }
+  }
+  @include range-width(1700px) {
+    .unit { width: 400px; }
+    .full { width: 400px * 2 + 10px; }
+  }
+
+  // @include range-width(0, 450px) {
+  //   padding: 36px 10px 20px 10px;
+  //   .unit {
+  //     width: 100%;
+  //     margin: 0;
+  //     + .unit {
+  //       margin-top: 12px;
+  //     }
+  //   }
+  // }
 }
 
+
+
+// .line {
+//   fill: none;
+//   stroke: #000;
+//   stroke-width: 1.5px;
+// }
+// path {
+//     fill: none;
+//     stroke: #aaa;
+//     stroke-width: 1px;
+// }

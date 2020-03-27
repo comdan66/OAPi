@@ -15,6 +15,6 @@ require('./libs/node/Init')
     load('serve/Check')(_ =>
       load('serve/Watch')(_ =>
         load('serve/Server')(_ =>
-          load('serve/Python')(_ =>
+          load('serve/FetchData')(_ =>
             load('serve/Ready')(
               done))))))

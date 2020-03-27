@@ -10,6 +10,8 @@ const Display    = require('../Display')
 const FileSystem = require('fs')
   const Exists   = FileSystem.existsSync
   const ReadFile = FileSystem.readFileSync
+  const Access    = FileSystem.accessSync
+  const WriteAble = FileSystem.constants.W_OK
 
 const checkConfig = _ => {
   const Config = require(Path.config)
@@ -48,6 +50,8 @@ const checkConfig = _ => {
       Config.server.https.enable = false
     }
   }
+  
+  Config.logDir = Config.logDir || null
 
   return true
 }
@@ -75,6 +79,18 @@ module.exports = closure => {
   checkConfig()
     ? Display.line(true)
     : Display.line(false, '確認設定檔失敗！')
+
+  const Config = require(Path.config)
+
+  Display.lines('檢查 Log 目錄是否存在', '執行動作', 'check log dir exists')
+  Exists(Config.logDir)
+    ? Display.line(true)
+    : Display.line(false, 'Log 目錄不存在！')
+
+  Display.lines('檢查 Log 目錄是否可寫入', '執行動作', 'check log writeable')
+  try { Access(Config.logDir, WriteAble) }
+  catch (e) { Display.line(false, ['Log 目錄不可讀寫，請檢查目錄權限！', e]) }
+  Display.line(true)
 
   Display.lines('檢查目錄是否存在', '執行動作', 'check ' + Path.relative(Path.root, Path.entry) + Path.sep + ' is exists')
   Exists(Path.entry)

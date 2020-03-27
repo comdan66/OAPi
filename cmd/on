@@ -8,10 +8,10 @@
 require('./libs/node/Init')
   .title('開啟完成 PI 伺服器')
   .path('config', ['cmd', 'config', 'on.js'])
-  .path('pythonEntry', ['cmd', 'libs', 'python', 'Main.py'])
+  .path('pythonEntry', ['cmd', 'libs', 'python', 'test.py'])
   .gola((load, done) =>
     load('on/Check')(_ =>
         load('on/Server')(_ =>
-          load('on/Python')(_ =>
+          load('on/FetchData')(_ =>
             load('on/Ready')(
               done)))))
