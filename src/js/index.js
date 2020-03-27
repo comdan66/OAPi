@@ -41,13 +41,10 @@ Timeline.prototype.fetchX = function(data) {
     .attr('transform', 'translate(0, 12)')
     .attr('fill', 'rgba(255, 255, 255, .75)')
     .attr('stroke-width', '0')
-    .attr('dx', '-.8em')
-    .attr('dy', '10px')
-    .attr('transform', 'rotate(-65)')
-    .style('font-size', '12px')
+
   this.gPaths.forEach(gPath => gPath.fetch(data))
 }
-Timeline.format = '%H:%M'
+Timeline.format = '%M'
 Timeline.instance = null
 
 window.Load.func({

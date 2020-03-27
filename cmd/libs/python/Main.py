@@ -36,7 +36,7 @@ def log(data):
 
   global nowTime
   now = datetime.datetime.now()
-  hourMin = '{}:{}'.format('{:02d}'.format(now.hour % 12), '{:02d}'.format(now.minute))
+  hourMin = '{}'.format('{:02d}'.format(now.minute))
   if nowTime != hourMin:
     f = open('{}{}{}{}.Sensor.log'.format(logDir, '{:02d}'.format(now.year), '{:02d}'.format(now.month), '{:02d}'.format(now.day)), "a")
     data['time'] = nowTime = hourMin
