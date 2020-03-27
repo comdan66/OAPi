@@ -20,8 +20,8 @@ def log(data):
   now = datetime.datetime.now()
   hourMin = '{}'.format('{:02d}'.format(now.minute), '{:02d}'.format(now.second))
   if nowTime != hourMin:
+    nowTime = hourMin
     f = open('{}{}{}{}.Sensor.log'.format(logDir, '{:02d}'.format(now.year), '{:02d}'.format(now.month), '{:02d}'.format(now.day)), "a")
-    data['time'] = nowTime = hourMin
     data['now'] = int(time.time())
     f.write(json.dumps(data) + "\n")
     f.close()

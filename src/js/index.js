@@ -13,7 +13,7 @@ const Timeline = function(data, el, settings, width, height, padding) {
   const svg = d3.select(el).append('div').append('svg').attr('width', width).attr('height', height).append('g').attr('transform', 'translate(' + padding.left + ', 0)')
   this.x = d3.time.scale().range([0, width - padding.left - padding.right])
   this.y = d3.scale.linear().range([height - padding.bottom - 10, padding.top + 10]).domain([0, 100])
-  this.axisX = d3.svg.axis().scale(this.x).orient('bottom').tickSize(-(height - padding.top - padding.bottom), 0).tickFormat(d3.time.format(Timeline.format))
+  this.axisX = d3.svg.axis().scale(this.x).orient('bottom').tickSize(-(height - padding.top - padding.bottom), 0).tickFormat(d3.time.format('%M'))
   this.xAxis = svg.append('g').attr('class', 'x axis').attr('transform', 'translate(0, ' + (height - padding.bottom) + ')').attr('stroke', 'rgba(255, 255, 255, 0.10)')
   this.gPaths = settings.map(setting => {
     return {
@@ -25,20 +25,19 @@ const Timeline = function(data, el, settings, width, height, padding) {
       fetch (data) {
         const percentageMargin = 100 / data.length
         const percentageX = d3.scale.linear().domain([0, data.length - 1]).range([percentageMargin, 100 - percentageMargin])
-        this.path.transition().attr('d', d3.svg.line().interpolate('monotone').x(d => this.x(d.time)).y(d => this.y(d[this.key].percent))(data))
+        this.path.transition().attr('d', d3.svg.line().interpolate('monotone').x(d => this.x(d.now)).y(d => this.y(d[this.key].percent))(data))
         this.defs.data(data).attr('offset', (d, i) => percentageX(i) + '%').attr('style', d => 'stop-color:' + this.color(d[this.key].percent) + ';stop-opacity:1')
-        this.label && this.label.data(data).attr({ x: (d, i) => this.x(d.time), y: (d, i) => this.y(d[this.key].percent) - 14 }).text((d, i) => d[this.key].value + this.unit)
+        this.label && this.label.data(data).attr({ x: (d, i) => this.x(d.now), y: (d, i) => this.y(d[this.key].percent) - 14 }).text((d, i) => d[this.key].value + this.unit)
       }
     }
   })
 }
 Timeline.prototype.fetchX = function(data) {
-  this.x.domain(d3.extent(data, d => d.time))
+  this.x.domain(d3.extent(data, d => d.now))
   this.axisX.ticks(data.length)
   this.xAxis.transition().call(this.axisX).selectAll('text').style('text-anchor', 'middle').attr('transform', 'translate(0, 12)').attr('fill', 'rgba(255, 255, 255, .75)').attr('stroke-width', '0').style('font-size', '12px')
   this.gPaths.forEach(gPath => gPath.fetch(data))
 }
-Timeline.format = '%M'
 Timeline.instance = null
 
 window.Load.func({
@@ -52,8 +51,7 @@ window.Load.func({
   },
   watch: {
     timeline () {
-      const parseDate = d3.time.format(Timeline.format)
-      const data = this.timeline.map(a => ({ ...a, ...{ time: parseDate.parse(a.time) } }))
+      const data = this.timeline.map(a => ({ ...a, ...{ now: new Date(a.now * 1000) } }))
       if (Timeline.instance !== null) return Timeline.fetchX(data)
       const w1 = this.$refs.temperature.clientWidth, h1 = this.$refs.temperature.clientHeight, w2 = this.$refs.humidity.clientWidth, h2 = this.$refs.humidity.clientHeight, w3 = this.$refs.pressure.clientWidth, h3 = this.$refs.pressure.clientHeight, w4 = this.$refs.all.clientWidth, h4 = this.$refs.all.clientHeight
       if (!(w1 && h1 && w2 && h2 && w3 && h3 && w4 && h4)) return
@@ -147,9 +145,9 @@ window.Load.func({
         if (pressureMax === null || pressure > pressureMax) pressureMax = pressure
         if (pressureMin === null || pressure < pressureMin) pressureMin = pressure
 
-        return { time: a.time, temperature: temperature, humidity: humidity, pressure: pressure }
+        return { now: a.now, temperature: temperature, humidity: humidity, pressure: pressure }
       }).map(a => ({
-        time: a.time,
+        now: a.now,
         temperature: { value: a.temperature / 100, percent: temperatureMax > temperatureMin ? Math.round(((a.temperature - temperatureMin) / (temperatureMax - temperatureMin)) * 100) : 100 },
         humidity: { value: a.humidity / 100, percent: humidityMax > humidityMin ? Math.round(((a.humidity - humidityMin) / (humidityMax - humidityMin)) * 100) : 100 },
         pressure: { value: a.pressure / 100, percent: pressureMax > pressureMin ? Math.round(((a.pressure - pressureMin) / (pressureMax - pressureMin)) * 100) : 100 },
