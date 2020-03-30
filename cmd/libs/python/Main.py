@@ -56,7 +56,7 @@ def log(dhtTemp, dhtHumidity, bmpTemp, bmpPress, cpuTemp, cpuVolt, pir):
 
   if DB_Connect != None and DB != None:
     now = datetime.datetime.now()
-    sql = 'INSERT INTO `LogSecond`(`dhtTemp`, `dhtHumidity`, `bmpTemp`, `bmpPress`, `cpuTemp`, `cpuVolt`, `pir`, `unixTime`, `timeIndex`, `timeValue`) VALUES ({:0.2f}, {:0.2f}, {:0.2f}, {:0.2f}, {:0.2f}, {:0.3f}, "{}", {:d}, {:d}{:02d}{:02d}{:02d}{:02d}, {:02d});'.format(round(dhtTemp, 2), round(dhtHumidity, 2), round(bmpTemp, 2), round(bmpPress, 2), round(cpuTemp, 2), round(cpuVolt, 3), 'yes' if pir else 'no', int(time.time()), now.year, now.month, now.day, now.hour, now.minute, now.second)
+    sql = 'INSERT INTO `LogSecond`(`dhtTemp`, `dhtHumidity`, `bmpTemp`, `bmpPress`, `cpuTemp`, `cpuVolt`, `pir`, `timeIndex`, `timeValue`) VALUES ({:0.2f}, {:0.2f}, {:0.2f}, {:0.2f}, {:0.2f}, {:0.3f}, "{}", {:d}, {:d}{:02d}{:02d}{:02d}{:02d}, {:02d});'.format(round(dhtTemp, 2), round(dhtHumidity, 2), round(bmpTemp, 2), round(bmpPress, 2), round(cpuTemp, 2), round(cpuVolt, 3), 'yes' if pir else 'no', now.year, now.month, now.day, now.hour, now.minute, now.second)
     try:
       DB_Connect.execute(sql)
       DB.commit()
