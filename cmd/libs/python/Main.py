@@ -27,43 +27,22 @@ A27 = 0x27
 # 時間計數器
 TimeCounter = 0
 
-
-lastMinu  = None
-lastHour = None
-lastDate  = None
-
 DB = None
 DB_Connect = None
 
-def genDB():
-  path = os.path.dirname(os.path.dirname(__file__)).split(os.path.sep)
-  path.pop()
-  path.append('config')
-  path.append('mysql.json')
-  path = os.path.sep.join(path)
-
-  with open(path) as file:
-    data = json.load(file)
-  
-  if 'db1' in data: 
-    return (data['db1']['host'], data['db1']['user'], data['db1']['password'], data['db1']['database'])
-  else:
-    return None
-
-def log(dhtTemp, dhtHumidity, bmpTemp, bmpPress, cpuTemp, cpuVolt, pir):
+def log(data):
   global DB
   global DB_Connect
 
   if DB_Connect != None and DB != None:
     now = datetime.datetime.now()
-    sql = 'INSERT INTO `LogSecond`(`dhtTemp`, `dhtHumidity`, `bmpTemp`, `bmpPress`, `cpuTemp`, `cpuVolt`, `pir`, `timeIndex`, `timeValue`) VALUES ({:0.2f}, {:0.2f}, {:0.2f}, {:0.2f}, {:0.2f}, {:0.3f}, "{}", {:d}{:02d}{:02d}{:02d}{:02d}, {:02d});'.format(round(dhtTemp, 2), round(dhtHumidity, 2), round(bmpTemp, 2), round(bmpPress, 2), round(cpuTemp, 2), round(cpuVolt, 3), 'yes' if pir else 'no', now.year, now.month, now.day, now.hour, now.minute, now.second)
+    sql = genInsertSQL('LogSecond', data)
     try:
       DB_Connect.execute(sql)
       DB.commit()
     except:
       pass
-    
-  print(dhtTemp, dhtHumidity, bmpTemp, bmpPress, cpuTemp, cpuVolt, pir)
+  print(data)
 
 def setup():
   global DB
@@ -81,6 +60,32 @@ def setup():
     DB_Connect = DB.cursor()
   except Exception as e:
     DB = None
+
+def genInsertSQL(table, json): 
+  keylist = []
+  valuelist = []
+  for key, value in json.items():
+    keylist.append('`' + key + '`')
+    if type(value) in (str, unicode):
+      valuelist.append("'" + value + "'")
+    else:
+      valuelist.append(str(value))
+  return 'INSERT INTO `' + table + '` (' + ', '.join(keylist) + ') VALUES (' + ', '.join(valuelist)  + ');'
+
+def genDB():
+  path = os.path.dirname(os.path.dirname(__file__)).split(os.path.sep)
+  path.pop()
+  path.append('config')
+  path.append('mysql.json')
+  path = os.path.sep.join(path)
+
+  with open(path) as file:
+    data = json.load(file)
+  
+  if 'db1' in data: 
+    return (data['db1']['host'], data['db1']['user'], data['db1']['password'], data['db1']['database'])
+  else:
+    return None
 
 def readCPUTemp():
   temp = None
@@ -115,14 +120,8 @@ def loop():
   
   while True:
     now = datetime.datetime.now()
-    LCD1602.write(0, 0, '{}/{}/{}'.format(
-      '{:02d}'.format(now.year),
-      '{:02d}'.format(now.month),
-      '{:02d}'.format(now.day)))
-    LCD1602.write(2, 1, '{}:{}:{}'.format(
-      '{:02d}'.format(now.hour % 12),
-      '{:02d}'.format(now.minute),
-      '{:02d}'.format(now.second)))
+    LCD1602.write(0, 0, '{}/{}/{}'.format('{:02d}'.format(now.year), '{:02d}'.format(now.month), '{:02d}'.format(now.day)))
+    LCD1602.write(2, 1, '{}:{}:{}'.format('{:02d}'.format(now.hour % 12), '{:02d}'.format(now.minute), '{:02d}'.format(now.second)))
 
     TimeCounter = (TimeCounter + 1) % 2
     if TimeCounter == 1:
@@ -130,12 +129,18 @@ def loop():
       LCD1602.write(11, 0, '{0:0.1f}C'.format(temperature))
       LCD1602.write(11, 1, '{0:0.1f}%'.format(humidity))
 
-    log(
-      temperature, humidity,
-      Sensor2.read_temperature(), Sensor2.read_pressure(),
-      readCPUTemp(), readCPUVolts(),
-      readPerson()
-    )
+    log({
+      'temperature': temperature,
+      'humidity': humidity,
+      'pressure': Sensor2.read_pressure(),
+      'cpuTemp': readCPUTemp(),
+      'cpuVolt': readCPUVolts(),
+      'pir': 'yes' if readPerson() else 'no',
+      'timeIndex': long('{:d}{:02d}{:02d}{:02d}{:02d}'.format(now.year, now.month, now.day, now.hour, now.minute)),
+      'timeValue': int('{:d}'.format(now.second))
+    })
+
+    # log(temperature, humidity, Sensor2.read_pressure(), readCPUTemp(), readCPUVolts(), readPerson())
     time.sleep(1)
 
 def destroy():
