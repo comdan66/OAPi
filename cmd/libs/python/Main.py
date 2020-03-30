@@ -9,6 +9,8 @@ import time
 import datetime
 import json
 import re, commands
+import MySQLdb
+import os
 
 # 溫度 濕度
 DHT_PORT = 17
@@ -26,33 +28,59 @@ A27 = 0x27
 TimeCounter = 0
 
 
-logDir = '/home/pi/www/log/'
-nowTime = ''
+lastMinu  = None
+lastHour = None
+lastDate  = None
 
-def log(data):
-  f = open('{}Sensor.log'.format(logDir), "w")
-  f.write(json.dumps(data))
-  f.close()
+DB = None
+DB_Connect = None
 
-  global nowTime
-  now = datetime.datetime.now()
-  hourMin = '{}'.format('{:02d}'.format(now.minute))
-  if nowTime != hourMin:
-    nowTime = hourMin
-    f = open('{}{}{}{}.Sensor.log'.format(logDir, '{:02d}'.format(now.year), '{:02d}'.format(now.month), '{:02d}'.format(now.day)), "a")
-    data['now'] = int(time.time())
-    f.write(json.dumps(data) + "\n")
-    f.close()
+def genDB():
+  path = os.path.dirname(os.path.dirname(__file__)).split(os.path.sep)
+  path.pop()
+  path.append('config')
+  path.append('mysql.json')
+  path = os.path.sep.join(path)
 
-  print(data)
+  with open(path) as file:
+    data = json.load(file)
+  
+  if 'db1' in data: 
+    return (data['db1']['host'], data['db1']['user'], data['db1']['password'], data['db1']['database'])
+  else:
+    return None
+
+def log(dhtTemp, dhtHumidity, bmpTemp, bmpPress, cpuTemp, cpuVolt, pir):
+  global DB
+  global DB_Connect
+
+  if DB_Connect != None and DB != None:
+    now = datetime.datetime.now()
+    sql = 'INSERT INTO `LogSecond`(`dhtTemp`, `dhtHumidity`, `bmpTemp`, `bmpPress`, `cpuTemp`, `cpuVolt`, `pir`, `unixTime`, `timeIndex`, `timeValue`) VALUES ({:0.2f}, {:0.2f}, {:0.2f}, {:0.2f}, {:0.2f}, {:0.3f}, "{}", {:d}, {:d}{:02d}{:02d}{:02d}{:02d}, {:02d});'.format(round(dhtTemp, 2), round(dhtHumidity, 2), round(bmpTemp, 2), round(bmpPress, 2), round(cpuTemp, 2), round(cpuVolt, 3), 'yes' if pir else 'no', int(time.time()), now.year, now.month, now.day, now.hour, now.minute, now.second)
+    try:
+      DB_Connect.execute(sql)
+      DB.commit()
+    except:
+      pass
+    
+  print(dhtTemp, dhtHumidity, bmpTemp, bmpPress, cpuTemp, cpuVolt, pir)
 
 def setup():
+  global DB
+  global DB_Connect
   global Sensor2
   Sensor2 = BMP085.BMP085(2, A77)
   LCD1602.init(A27, 1)
   LCD1602.clear()
   GPIO.setmode(GPIO.BCM)
   GPIO.setup(PERSON_PORT, GPIO.IN)
+  
+  try:
+    host, user, passwd, db = genDB()
+    DB = MySQLdb.connect(host=host, user=user, passwd=passwd, db=db)
+    DB_Connect = DB.cursor()
+  except Exception as e:
+    DB = None
 
 def readCPUTemp():
   temp = None
@@ -101,25 +129,19 @@ def loop():
       humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, DHT_PORT)
       LCD1602.write(11, 0, '{0:0.1f}C'.format(temperature))
       LCD1602.write(11, 1, '{0:0.1f}%'.format(humidity))
-    
-    log({
-      'status': readPerson(),
-      'device1': {
-        'humidity': humidity,
-        'temperature': temperature
-      },
-      'device2': {
-        'temperature': Sensor2.read_temperature(),
-        'pressure': Sensor2.read_pressure()
-      },
-      'cpu': {
-        'temperature': readCPUTemp(),
-        'voltage': readCPUVolts()
-      }
-    })
+
+    log(
+      temperature, humidity,
+      Sensor2.read_temperature(), Sensor2.read_pressure(),
+      readCPUTemp(), readCPUVolts(),
+      readPerson()
+    )
     time.sleep(1)
 
 def destroy():
+  global DB
+  if DB != None:
+    DB.close()
   GPIO.cleanup()
 
 if __name__ == "__main__":
