@@ -81,39 +81,32 @@ def genDB():
 
   with open(path) as file:
     data = json.load(file)
-  
+
   if 'db1' in data: 
     return (data['db1']['host'], data['db1']['user'], data['db1']['password'], data['db1']['database'])
   else:
     return None
 
 def readCPUTemp():
-  temp = None
   err, msg = commands.getstatusoutput('vcgencmd measure_temp')
   if not err:
     m = re.search(r'-?\d\.?\d*', msg)
     try:
-      temp = float(m.group())
+      return float(m.group())
     except:
-      pass
-  return temp
+      return None
 
 def readCPUVolts():
-  volt = None
   err, msg = commands.getstatusoutput('vcgencmd measure_volts')
   if not err:
     m = re.search(r'-?\d\.?\d*', msg)
     try:
-      volt = float(m.group())
+      return float(m.group())
     except:
-      pass
-  return volt
+      return None
 
 def readPerson():
-  if GPIO.input(PERSON_PORT) == 1:
-    return True
-  else:
-    return False
+  return True if GPIO.input(PERSON_PORT) == 1 else False
 
 def loop():
   global TimeCounter
@@ -130,17 +123,15 @@ def loop():
       LCD1602.write(11, 1, '{0:0.1f}%'.format(humidity))
 
     log({
-      'temperature': temperature,
-      'humidity': humidity,
-      'pressure': Sensor2.read_pressure(),
-      'cpuTemp': readCPUTemp(),
-      'cpuVolt': readCPUVolts(),
+      'temperature': round(temperature * 100) / 100,
+      'humidity': round(humidity * 100) / 100,
+      'pressure': round(Sensor2.read_pressure() * 100) / 100,
+      'cpuTemp': round(readCPUTemp() * 100) / 100,
+      'cpuVolt': round(readCPUVolts() * 10000) / 10000,
       'pir': 'yes' if readPerson() else 'no',
       'timeIndex': long('{:d}{:02d}{:02d}{:02d}{:02d}'.format(now.year, now.month, now.day, now.hour, now.minute)),
       'timeValue': int('{:d}'.format(now.second))
     })
-
-    # log(temperature, humidity, Sensor2.read_pressure(), readCPUTemp(), readCPUVolts(), readPerson())
     time.sleep(1)
 
 def destroy():
