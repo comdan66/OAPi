@@ -122,16 +122,16 @@ def loop():
       LCD1602.write(11, 0, '{0:0.1f}C'.format(temperature))
       LCD1602.write(11, 1, '{0:0.1f}%'.format(humidity))
 
-    log({
-      'temperature': round(temperature * 100) / 100,
-      'humidity': round(humidity * 100) / 100,
-      'pressure': round(Sensor2.read_pressure() * 100) / 100,
-      'cpuTemp': round(readCPUTemp() * 100) / 100,
-      'cpuVolt': round(readCPUVolts() * 10000) / 10000,
-      'pir': 'yes' if readPerson() else 'no',
-      'timeIndex': long('{:d}{:02d}{:02d}{:02d}{:02d}'.format(now.year, now.month, now.day, now.hour, now.minute)),
-      'timeValue': int('{:d}'.format(now.second))
-    })
+      log({
+        'temperature': round(temperature * 100) / 100,
+        'humidity': round(humidity * 100) / 100,
+        'pressure': round(Sensor2.read_pressure() * 100) / 100,
+        'cpuTemp': round(readCPUTemp() * 100) / 100,
+        'cpuVolt': round(readCPUVolts() * 10000) / 10000,
+        'pir': 'yes' if readPerson() else 'no',
+        'timeIndex': long('{:d}{:02d}{:02d}{:02d}{:02d}'.format(now.year, now.month, now.day, now.hour, now.minute)),
+        'timeValue': int('{:d}'.format(now.second))
+      })
     time.sleep(1)
 
 def destroy():
